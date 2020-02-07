@@ -29,33 +29,3 @@ dependencies {
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.61"
 }
-
-
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = 'rxbeacon'
-    orgName = 'florent37'
-
-    publishedGroupId = 'com.github.florent37'
-    libraryName = 'RxBeacon'
-    artifact = 'rxbeacon'
-
-    libraryDescription = ''
-
-    siteUrl = 'https://github.com/florent37/RxBeacon'
-    gitUrl = 'https://github.com/florent37/RxBeacon.git'
-
-    libraryVersion = rootProject.ext.libraryVersion
-
-    developerId = 'florent37'
-    developerName = 'florent37'
-    developerEmail = 'champigny.florent@gmail.com'
-
-    licenseName = 'The Apache Software License, Version 2.0'
-    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-    allLicenses = ["Apache-2.0"]
-}
-
-
-apply from: rootProject.file('gradle/install-v1.gradle')
-apply from: rootProject.file('gradle/bintray-android-v1.gradle')
