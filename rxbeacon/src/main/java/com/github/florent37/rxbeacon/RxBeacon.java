@@ -21,7 +21,9 @@ import io.reactivex.ObservableSource;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.annotations.Nullable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by florentchampigny on 28/04/2017.
@@ -33,10 +35,29 @@ public class RxBeacon {
     private Context application;
     private Region region = null;
     private BeaconManager beaconManager;
+    private long backgroundScanPeriod = 10000L;
+    private long foregroundScanPeriod = 10000L;
 
-    public RxBeacon(Context context) {
+    private static final String RUUVI_LAYOUT = "m:0-2=0499,i:4-19,i:20-21,i:22-23,p:24-24"; // TBD
+    private static final String IBEACON_LAYOUT = "m:0-3=4c000215,i:4-19,i:20-21,i:22-23,p:24-24";
+    private static final String ALTBEACON_LAYOUT = BeaconParser.ALTBEACON_LAYOUT;
+    private static final String EDDYSTONE_UID_LAYOUT = BeaconParser.EDDYSTONE_UID_LAYOUT;
+    private static final String EDDYSTONE_URL_LAYOUT = BeaconParser.EDDYSTONE_URL_LAYOUT;
+    private static final String EDDYSTONE_TLM_LAYOUT = BeaconParser.EDDYSTONE_TLM_LAYOUT;
+
+    private RxBeacon(Context context) {
         this.application = context.getApplicationContext();
         this.beaconManager = BeaconManager.getInstanceForApplication(application);
+        beaconManager.setBackgroundBetweenScanPeriod(backgroundScanPeriod);
+        beaconManager.setForegroundBetweenScanPeriod(foregroundScanPeriod);
+        beaconManager.setBackgroundScanPeriod(backgroundScanPeriod);
+        beaconManager.setForegroundScanPeriod(foregroundScanPeriod);
+
+        // Add all the beacon types we want to discover
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_LAYOUT));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE_UID_LAYOUT));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE_URL_LAYOUT));
+        beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE_TLM_LAYOUT));
     }
 
     public static RxBeacon with(Context context) {
@@ -55,6 +76,17 @@ public class RxBeacon {
                 .add(new BeaconParser().
                         setBeaconLayout(parser));
 
+        return this;
+    }
+
+    public RxBeacon addBackgroundScanPeriod(long backgroundScanPeriod) {
+        this.backgroundScanPeriod = backgroundScanPeriod;
+        return this;
+    }
+
+
+    public RxBeacon addForegroundScanPeriod(long foregroundScanPeriod) {
+        this.foregroundScanPeriod = foregroundScanPeriod;
         return this;
     }
 
@@ -115,7 +147,7 @@ public class RxBeacon {
                                 beaconManager.addRangeNotifier(new RangeNotifier() {
                                     @Override
                                     public void didRangeBeaconsInRegion(Collection<Beacon> collection, Region region) {
-                                        objectObservableEmitter.onNext(new RxBeaconRange(collection, region));
+                                        objectObservableEmitter.onNext(new RxBeaconRange(Extensions.mapToBeaconSave(collection), region));
                                     }
                                 });
                                 beaconManager.startRangingBeaconsInRegion(getRegion());
@@ -124,6 +156,7 @@ public class RxBeacon {
                     }
                 });
     }
+
 
     public Observable<RxBeaconMonitor> monitor() {
         return startup()

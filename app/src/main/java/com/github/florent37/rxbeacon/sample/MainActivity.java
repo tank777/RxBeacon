@@ -1,13 +1,15 @@
 package com.github.florent37.rxbeacon.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 
+import com.github.florent37.rxbeacon.BeaconSaved;
 import com.github.florent37.rxbeacon.RxBeacon;
 import com.github.florent37.rxbeacon.RxBeaconRange;
 
-import io.reactivex.annotations.NonNull;
+import java.util.Locale;
+
 import io.reactivex.functions.Consumer;
 
 public class MainActivity extends AppCompatActivity {
@@ -18,12 +20,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         RxBeacon.with(this)
-                //.addBeaconParser(RxBeaconParser.ESTIMOTE)
+                .addBackgroundScanPeriod(15000L)
+                .addForegroundScanPeriod(15000L)
                 .beaconsInRegion()
                 .subscribe(new Consumer<RxBeaconRange>() {
                     @Override
-                    public void accept(@NonNull RxBeaconRange rxBeaconRange) throws Exception {
-                        Log.d("beaconsInRegion", rxBeaconRange.toString());
+                    public void accept(RxBeaconRange rxBeaconRange) throws Exception {
+                        for (BeaconSaved beacon : rxBeaconRange.getBeacons()) {
+                            String distance = String.format(Locale.getDefault(), "%.2f", beacon.getDistance());
+                            Log.i("beacon", distance);
+                        }
                     }
                 });
 

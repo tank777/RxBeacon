@@ -1,6 +1,5 @@
 package com.github.florent37.rxbeacon;
 
-import org.altbeacon.beacon.Beacon;
 import org.altbeacon.beacon.Region;
 
 import java.util.Collection;
@@ -10,15 +9,15 @@ import java.util.Collection;
  */
 
 public class RxBeaconRange {
-    private final Collection<Beacon> beacons;
+    private final Collection<BeaconSaved> beacons;
     private final Region region;
 
-    public RxBeaconRange(Collection<Beacon> beacons, Region region) {
+    public RxBeaconRange(Collection<BeaconSaved> beacons, Region region) {
         this.beacons = beacons;
         this.region = region;
     }
 
-    public Collection<Beacon> getBeacons() {
+    public Collection<BeaconSaved> getBeacons() {
         return beacons;
     }
 
