@@ -188,4 +188,10 @@ public class RxBeacon {
                     }
                 });
     }
+
+    public void stopScan() {
+        if (beaconConsumer != null) {
+            beaconManager.unbind(beaconConsumer);
+        }
+    }
 }
