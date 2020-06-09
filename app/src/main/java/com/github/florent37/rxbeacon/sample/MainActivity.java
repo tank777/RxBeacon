@@ -1,7 +1,9 @@
 package com.github.florent37.rxbeacon.sample;
 
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
 
 import com.github.florent37.rxbeacon.BeaconSaved;
@@ -19,10 +21,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RxBeacon.with(this)
+        RxBeacon rxBeacon = new RxBeacon.Builder(this)
                 .addBackgroundScanPeriod(15000L)
                 .addForegroundScanPeriod(15000L)
-                .beaconsInRegion()
+                .build();
+        rxBeacon.beaconsInRegion()
                 .subscribe(new Consumer<RxBeaconRange>() {
                     @Override
                     public void accept(RxBeaconRange rxBeaconRange) throws Exception {

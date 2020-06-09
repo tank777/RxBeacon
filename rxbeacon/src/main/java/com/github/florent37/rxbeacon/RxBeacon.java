@@ -45,13 +45,13 @@ public class RxBeacon {
     private static final String EDDYSTONE_URL_LAYOUT = BeaconParser.EDDYSTONE_URL_LAYOUT;
     private static final String EDDYSTONE_TLM_LAYOUT = BeaconParser.EDDYSTONE_TLM_LAYOUT;
 
-    private RxBeacon(Context context) {
-        this.application = context.getApplicationContext();
+    private RxBeacon(Builder builder) {
+        this.application = builder.context.getApplicationContext();
         this.beaconManager = BeaconManager.getInstanceForApplication(application);
-        beaconManager.setBackgroundBetweenScanPeriod(backgroundScanPeriod);
-        beaconManager.setForegroundBetweenScanPeriod(foregroundScanPeriod);
-        beaconManager.setBackgroundScanPeriod(backgroundScanPeriod);
-        beaconManager.setForegroundScanPeriod(foregroundScanPeriod);
+        beaconManager.setBackgroundBetweenScanPeriod(builder.backgroundScanPeriod);
+        beaconManager.setForegroundBetweenScanPeriod(builder.foregroundScanPeriod);
+        beaconManager.setBackgroundScanPeriod(builder.backgroundScanPeriod);
+        beaconManager.setForegroundScanPeriod(builder.foregroundScanPeriod);
 
         // Add all the beacon types we want to discover
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(IBEACON_LAYOUT));
@@ -60,8 +60,28 @@ public class RxBeacon {
         beaconManager.getBeaconParsers().add(new BeaconParser().setBeaconLayout(EDDYSTONE_TLM_LAYOUT));
     }
 
-    public static RxBeacon with(Context context) {
-        return new RxBeacon(context);
+    public static class Builder {
+        private long backgroundScanPeriod = 10000L;
+        private long foregroundScanPeriod = 10000L;
+        private Context context;
+
+        public Builder(Context context) {
+            this.context = context;
+        }
+
+        public Builder addBackgroundScanPeriod(long backgroundScanPeriod) {
+            this.backgroundScanPeriod = backgroundScanPeriod;
+            return this;
+        }
+
+        public Builder addForegroundScanPeriod(long foregroundScanPeriod) {
+            this.foregroundScanPeriod = foregroundScanPeriod;
+            return this;
+        }
+
+        public RxBeacon build() {
+            return new RxBeacon(this);
+        }
     }
 
     private Region getRegion() {
@@ -76,17 +96,6 @@ public class RxBeacon {
                 .add(new BeaconParser().
                         setBeaconLayout(parser));
 
-        return this;
-    }
-
-    public RxBeacon addBackgroundScanPeriod(long backgroundScanPeriod) {
-        this.backgroundScanPeriod = backgroundScanPeriod;
-        return this;
-    }
-
-
-    public RxBeacon addForegroundScanPeriod(long foregroundScanPeriod) {
-        this.foregroundScanPeriod = foregroundScanPeriod;
         return this;
     }
 

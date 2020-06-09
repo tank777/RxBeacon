@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidProject-RxBeacon.iml" filepath="$PROJECT_DIR$/AndroidProject-RxBeacon.iml" group="RxBeacon" />
+      <module fileurl="file://$PROJECT_DIR$/app/AndroidProject-RxBeacon-app.iml" filepath="$PROJECT_DIR$/app/AndroidProject-RxBeacon-app.iml" group="RxBeacon/app" />
+      <module fileurl="file://$PROJECT_DIR$/rxbeacon/AndroidProject-RxBeacon-rxbeacon.iml" filepath="$PROJECT_DIR$/rxbeacon/AndroidProject-RxBeacon-rxbeacon.iml" group="RxBeacon/rxbeacon" />
       <module fileurl="file://$PROJECT_DIR$/Github-RxBeacon.iml" filepath="$PROJECT_DIR$/Github-RxBeacon.iml" />
       <module fileurl="file://$PROJECT_DIR$/RxBeacon.iml" filepath="$PROJECT_DIR$/RxBeacon.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/RxBeacon-app.iml" filepath="$PROJECT_DIR$/app/RxBeacon-app.iml" />
