@@ -47,6 +47,7 @@ public class RxBeacon {
 
     private RxBeacon(Builder builder) {
         this.application = builder.context.getApplicationContext();
+        BeaconManager.setUseTrackingCache(builder.setUseTrackingCache);
         this.beaconManager = BeaconManager.getInstanceForApplication(application);
         beaconManager.setBackgroundBetweenScanPeriod(builder.backgroundScanPeriod);
         beaconManager.setForegroundBetweenScanPeriod(builder.foregroundScanPeriod);
@@ -64,6 +65,7 @@ public class RxBeacon {
         private long backgroundScanPeriod = 10000L;
         private long foregroundScanPeriod = 10000L;
         private Context context;
+        private boolean setUseTrackingCache = false;
 
         public Builder(Context context) {
             this.context = context;
@@ -76,6 +78,11 @@ public class RxBeacon {
 
         public Builder addForegroundScanPeriod(long foregroundScanPeriod) {
             this.foregroundScanPeriod = foregroundScanPeriod;
+            return this;
+        }
+
+        public Builder setUseTrackingCache(boolean setUseTrackingCache) {
+            this.setUseTrackingCache = setUseTrackingCache;
             return this;
         }
 

@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         RxBeacon rxBeacon = new RxBeacon.Builder(this)
                 .addBackgroundScanPeriod(15000L)
                 .addForegroundScanPeriod(15000L)
+                .setUseTrackingCache(true)
                 .build();
         rxBeacon.beaconsInRegion()
                 .subscribe(new Consumer<RxBeaconRange>() {
