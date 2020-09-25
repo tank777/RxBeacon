@@ -13,6 +13,7 @@ data class BeaconSaved(
         val rssi: Int = 0,
         val distance: Double = 0.toDouble(),
         val lastSeen: Long = 0,
+        val beaconName:String? = null,
 
         /**
      * Specialized field for every beacon type
@@ -42,6 +43,7 @@ data class BeaconSaved(
             val manufacturer = beacon.manufacturer
             val rssi = beacon.rssi
             val txPower = beacon.txPower
+            val bluetoothName = beacon.bluetoothName
             val distance = if (beacon.distance.isInfinite()) {
                 (-1).toDouble()
             } else {
@@ -105,7 +107,8 @@ data class BeaconSaved(
                     eddystoneUrlData = eddystoneUrlData,
                     eddystoneUidData = eddystoneUidData,
                     telemetryData = telemetryData,
-                    ruuviData = ruuviData
+                    ruuviData = ruuviData,
+                    beaconName = bluetoothName
             )
         }
     }
